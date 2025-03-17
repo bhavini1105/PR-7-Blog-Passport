@@ -1,0 +1,31 @@
+<%- include('../partials/header') %>
+<main>
+  <div class="container m-5">
+
+    <div class="row justify-content-center mt-3">
+      <div class="w-75">
+        <form method="post" action="" enctype="multipart/form-data">
+          <div class="mb-3">
+            <label for="title" class="form-label">Blog Title</label>
+            <input type="text" class="form-control" id="title" name="title">
+          </div>
+          <div class="mb-3">
+            <label for="author" class="form-label">Author</label>
+            <input type="text" class="form-control" id="author" name="author">
+          </div>
+          <div class="mb-3">
+            <input type="file" class="form-control" id="imgUrl" name="imgurl">
+          </div>
+          <div class="mb-3">
+            <label for="content" class="form-label">Content</label>
+            <input type="text" class="form-control" id="content" name="content">
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</main>
+
+   <!-- Bootstrap JavaScript Libraries -->
+<%- include('../partials/footer') %>
