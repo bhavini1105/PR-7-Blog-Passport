@@ -4,13 +4,17 @@ const fs = require('fs');
 const Profile = require("../models/profileModel");
 
 
-module.exports.homePage = async(req,res)=>{
+module.exports.homePage = async (req, res) => {
     try {
         let blogs = await Blog.find();
-        return res.render('index',{blogs});
+        return res.render('index', {blogs});
     } catch (error) {
         console.log(error.message);
-        return res.render('index',{blogs : []});
+        return res.render('index', {blogs,
+            success: req.flash("success"),
+            error: req.flash("error")
+        });
+
     }
 };
 
@@ -32,11 +36,11 @@ module.exports.addblogPage = (req, res) => {
     return res.render('pages/addblog');
 }
 
-module.exports.aboutPage =(req,res)=>{
+module.exports.aboutPage = (req, res) => {
     return res.render('pages/about');
 }
 
-module.exports.featurePage=(req,res)=>{
+module.exports.featurePage = (req, res) => {
     return res.render('pages/feature');
 }
 
@@ -119,77 +123,81 @@ module.exports.viewPage = async (req, res) => {
     }
 }
 
-module.exports.contactPage = async(req,res)=>{ 
+module.exports.contactPage = async (req, res) => {
     return res.render('pages/contact');
 }
 
-module.exports.signupPage = (req,res)=>{
+module.exports.signupPage = (req, res) => {
     return res.render('pages/signup');
 }
 
-module.exports.signup = async(req,res)=>{
+module.exports.signup = async (req, res) => {
     try {
-        let{username,password,email,confirmpassword} = req.body;
+        let { username, password, email, confirmpassword } = req.body;
 
-        if(password !== confirmpassword){
+        if (password !== confirmpassword) {
             return res.render('pages/signup');
         }
 
-        let user = await Admin.create({username,password});
+        let user = await Admin.create({ username, password });
 
-        return res.render('pages/signin',user);
+        return res.render('pages/signin', user);
 
     } catch (error) {
         return res.render('pages/signup');
     }
 }
 
-module.exports.signinPage=(req,res)=>{
+module.exports.signinPage = (req, res) => {
     return res.render('pages/signin');
 }
 
-module.exports.signin=(req,res)=>{
-    return res.render('/index');
+module.exports.signin = (req, res) => {
+    req.flash("success", "Login Successfully");
+    return res.redirect('/index');
 }
 
-module.exports.profile = (req,res)=>{
+module.exports.profile = (req, res) => {
     return res.render('pages/profile')
 }
 
-module.exports.changePasswordPage = (req,res)=>{
+module.exports.changePasswordPage = (req, res) => {
     return res.render('pages/changePassword');
 }
 
-module.exports.logOutPage = (req,res)=>{
-    req.logOut(()=>{
+module.exports.logOutPage = (req, res) => {
+    req.logOut(() => {
         return res.redirect('/signin')
     })
 }
 
-module.exports.changePassword = async(req,res)=>{
-    const{current_password,new_password,confirm_password} = req.body;
-    const {id} = req.user;
+module.exports.changePassword = async (req, res) => {
+    const { current_password, new_password, confirm_password } = req.body;
+    const { id } = req.user;
 
     let user = await Admin.findById(id);
 
-    if(current_password === user.password){
-        if(new_password === confirm_password){
+    if (current_password === user.password) {
+        if (new_password === confirm_password) {
+            req.flash("success", "Password Changed Successfully");
             user.password = new_password;
             await user.save();
             return res.redirect('/logout');
         }
-        else{
+        else {
+            req.flash("error", "Password not matched.");
             return res.redirect(req.get('Referrer') || '/change');
         }
     }
-    else{
+    else {
+        req.flash("error", "Current Password is invalid..");
         return res.redirect(req.get('Referrer') || '/change');
     }
 }
 
-module.exports.editProfile=(req,res)=>{
-    
-    let {id} = req.user;
+module.exports.editProfile = (req, res) => {
+
+    let { id } = req.user;
     console.log(id);
 
 }

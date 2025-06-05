@@ -8,7 +8,7 @@ const imgupload = require('../middleware/imageUpload');
 blogRouter.get('/signup',blogController.signupPage);
 blogRouter.post('/adminCreate',blogController.signup);
 blogRouter.get('/signin',blogController.signinPage);
-blogRouter.post('/signin',passport.authenticate('local',{failureRedirect:'pages/signin' , successRedirect:'/index'}));
+blogRouter.post('/signin',passport.authenticate('local',{failureRedirect:'pages/signin' }),blogController.signin);
 blogRouter.use(passport.userAuth);
 blogRouter.get('/index',blogController.homePage);
 blogRouter.get("/blog", blogController.blogPage);
