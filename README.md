@@ -26,7 +26,7 @@ Password :
 username:admin
 password:12345
 
-LIVE LINK : https://pr-7-blog-passport.onrender.com
+LIVE LINK :https://pr-7-blog-passport-1.onrender.com
 
 1. Clone the repository:
    ```sh
